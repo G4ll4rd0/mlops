@@ -4,6 +4,7 @@ API Module
 import pickle
 
 import pandas as pd
+from test.distribution_test import test_distributions
 import uvicorn
 from fastapi import FastAPI
 
@@ -25,6 +26,13 @@ def health_check():
 @app.post('/predict')
 def predict(data: list[float]):
     '''Prediction Endpoint'''
+
+    with open("data/stared_data.csv") as stored_data:
+        pito = len(stored_data.readlines())
+
+        if pito % 1_000 == 0:
+            test_distributions()
+
     x = [{f'X{i+1}': x for i, x in enumerate(data)}]
     df = pd.DataFrame.from_records(x)
     prediction = model.predict(df)
