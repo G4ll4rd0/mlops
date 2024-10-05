@@ -25,11 +25,16 @@ MLOps is an emerging discipline that combines machine learning (ML) with DevOps 
 MLOps-Basics-Learning-Project/
 │
 ├── data/                   # Dataset files
-├── notebooks/              # Jupyter notebooks for experimentation
-├── src/                   # Source code for ML models
+├── test/                   # Scripts to make tests
 │   ├── __init__.py
-│   ├── model.py            # Model definition
-│   └── utils.py           # Utility functions
+│   ├── demo.py             # Test the functionality of the API 
+│   ├── distribution_test.py# Test if the distributions has change 
+│   └── test_pred_csv.py    # Get predictions for the credit_pred.csv
+├── utils/                  # Useless directory now
+├── src/                    # Source code for ML models
+│   ├── __init__.py
+│   ├── model_testing.ipynb # EDA 
+│   └── train.py            # Script to train the model
 ├── requirements.txt        # Python package dependencies
 └── README.md               # Project documentation
 ```
