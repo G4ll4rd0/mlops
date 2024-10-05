@@ -5,8 +5,7 @@ import pickle
 
 import pandas as pd
 import uvicorn
-from fastapi import Depends, FastAPI, HTTPException
-
+from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -45,9 +44,8 @@ def predict(data: list[float]):
 @app.get('/datapoints')
 def datapoints():
     '''Retrieve all stored data'''
-    return 
-
-
+    data = pd.read_csv('./.artifacts/stored_data.csv')
+    return data.to_json(orient='records', lines=True).splitlines()
 
 if __name__ == '__main__':
     uvicorn.run('app:app', port = 1234, reload = True)
