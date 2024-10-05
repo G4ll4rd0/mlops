@@ -27,12 +27,6 @@ def health_check():
 def predict(data: list[float]):
     '''Prediction Endpoint'''
 
-    with open("data/stared_data.csv") as stored_data:
-        pito = len(stored_data.readlines())
-
-        if pito % 1_000 == 0:
-            test_distributions()
-
     x = [{f'X{i+1}': x for i, x in enumerate(data)}]
     df = pd.DataFrame.from_records(x)
     prediction = model.predict(df)
@@ -46,6 +40,12 @@ def predict(data: list[float]):
         pd.concat([stored_df, df], ignore_index=True).to_csv(path_stored, index = False)
     except:
         df.to_csv(path_stored, index=False)
+    
+    with open("data/stored_data.csv") as stored_data:
+        pito = len(stored_data.readlines())
+
+        if pito % 1_000 == 0:
+            test_distributions()
 
     return {'prediction': y}
 
