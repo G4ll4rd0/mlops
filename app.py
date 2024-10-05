@@ -10,7 +10,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-with open('./.artifacts/logistic.pkl', 'rb') as file:
+with open('./.artifacts/HistGradBoost.pkl', 'rb') as file:
     model = pickle.load(file)
 
 @app.get('/')
