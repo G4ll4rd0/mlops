@@ -4,12 +4,13 @@ API Module
 import pickle
 
 import pandas as pd
+from test.distribution_test import test_distributions
 import uvicorn
 from fastapi import FastAPI
 
 app = FastAPI()
 
-with open('./models/logistic.pkl', 'rb') as file:
+with open('./.artifacts/logistic.pkl', 'rb') as file:
     model = pickle.load(file)
 
 @app.get('/')
@@ -25,10 +26,34 @@ def health_check():
 @app.post('/predict')
 def predict(data: list[float]):
     '''Prediction Endpoint'''
+
+    with open("data/stared_data.csv") as stored_data:
+        pito = len(stored_data.readlines())
+
+        if pito % 1_000 == 0:
+            test_distributions()
+
     x = [{f'X{i+1}': x for i, x in enumerate(data)}]
     df = pd.DataFrame.from_records(x)
     prediction = model.predict(df)
-    return {'prediction': int(prediction[0])}
+    y = int(prediction[0])
+
+    # Store Data
+    df['Y'] = y
+    path_stored = './.artifacts/stored_data.csv'
+    try:
+        stored_df = pd.read_csv(path_stored)
+        pd.concat([stored_df, df], ignore_index=True).to_csv(path_stored, index = False)
+    except:
+        df.to_csv(path_stored, index=False)
+
+    return {'prediction': y}
+
+@app.get('/datapoints')
+def datapoints():
+    '''Retrieve all stored data'''
+    data = pd.read_csv('./.artifacts/stored_data.csv')
+    return data.to_json(orient='records', lines=True).splitlines()
 
 if __name__ == '__main__':
     uvicorn.run('app:app', port = 1234, reload = True)

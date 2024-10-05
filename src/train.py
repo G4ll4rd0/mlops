@@ -76,7 +76,6 @@ def main():
     y_hat_train = best_booster.predict(x_train)
     y_hat_test = best_booster.predict(x_test)
 
-
     f1_train = f1_score(y_train, y_hat_train)
     f1_test = f1_score(y_test, y_hat_test)
 
