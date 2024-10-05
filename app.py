@@ -27,14 +27,15 @@ def health_check():
 def predict(data: list[float]):
     '''Prediction Endpoint'''
 
-    x = [{f'X{i+1}': x for i, x in enumerate(data)}]
-    df = pd.DataFrame.from_records(x)
+    z = {f'X{i+1}': x for i, x in enumerate(data)}
+    x = [z]
+    df = pd.DataFrame.from_records(x).drop(['X10', 'X11', 'X6', 'X7', 'X8', 'X9'], axis = 1)
     prediction = model.predict(df)
     y = int(prediction[0])
 
     # Store Data
     df['Y'] = y
-    path_stored = './.artifacts/stored_data.csv'
+    path_stored = './data/stored_data.csv'
     try:
         stored_df = pd.read_csv(path_stored)
         pd.concat([stored_df, df], ignore_index=True).to_csv(path_stored, index = False)

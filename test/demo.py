@@ -3,13 +3,10 @@ import requests
 
 
 def test_api_request(data: list[float]) -> dict[str, int]:
-    print(data)
     response = requests.post('http://127.0.0.1:1234/predict', json=data, timeout = 30)
-    print(response)
+    # print(response)
 
     prediction = response.json()
-
-    print(prediction)
 
     return prediction
 
