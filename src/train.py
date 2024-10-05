@@ -13,11 +13,8 @@ from sklearn.preprocessing import Normalizer
 
 SEED = 20020906
 
-# TODO: Create better model
-def main():
-    '''Main training
-    '''
-    data = pd.read_csv('./data/credit_train.csv')
+def transform_data(data: pd.DataFrame) -> pd.DataFrame:
+
     x = data.drop('Y', axis = 1)
     y = data.Y
 
@@ -28,7 +25,13 @@ def main():
 
     y_hat_train = pipe.predict(x_train)
     y_hat_test = pipe.predict(x_test)
+    pass
 
+# TODO: Create better model
+def main():
+    '''
+    Main training
+    '''
     f1_train = f1_score(y_train, y_hat_train)
     f1_test = f1_score(y_test, y_hat_test)
 
@@ -46,4 +49,6 @@ def main():
         pickle.dump(pipe, file)
 
 if __name__ == '__main__':
+    data = pd.read_csv('./data/credit_train.csv')
+    transform_data(data=data)
     main()
